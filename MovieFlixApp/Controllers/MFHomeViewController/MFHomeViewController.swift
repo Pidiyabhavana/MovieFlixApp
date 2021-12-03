@@ -98,7 +98,7 @@ class MFHomeViewController: UIViewController {
             
             let movie = moviesList[row]
             
-            for i in 0..<self.homeViewModel.moviesData.moviesList.count {
+            for i in 0..<self.homeViewModel.moviesData.moviesList.count-1 {
                 let item = self.homeViewModel.moviesData.moviesList[i]
                 if item.id == movie.id {
                     self.homeViewModel.moviesData.moviesList.remove(at: i)
@@ -140,6 +140,7 @@ extension MFHomeViewController:UICollectionViewDataSource, UICollectionViewDeleg
         if movie.voteAverage >= 7.0 {
             identifier = "PopularMoviewCell"
             let popularCell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as! PopularMovieCell
+            popularCell.imgLargerBanner.image = UIImage.init(named: "default_image")
             let imgURL = "https://image.tmdb.org/t/p/original" + movie.backdropPath
             ImageLoader.shared.loadImage(from: URL.init(string: imgURL)!).sink(receiveValue: { image in
                 popularCell.imgLargerBanner.alpha = 0.0
@@ -162,7 +163,7 @@ extension MFHomeViewController:UICollectionViewDataSource, UICollectionViewDeleg
             unpopularCell.collection = self.collectionViewMovies
             
             let imgURL = "https://image.tmdb.org/t/p/w342" + movie.posterPath
-            
+            unpopularCell.imgPoster.image = UIImage.init(named: "default_image")
             ImageLoader.shared.loadImage(from: URL.init(string: imgURL)!).sink(receiveValue: { image in
                 unpopularCell.imgPoster.alpha = 0.0
                 unpopularCell.imgPoster.image = image
@@ -195,6 +196,7 @@ extension MFHomeViewController :UISearchBarDelegate{
             self.filterCollection(searchText: searchBar.text!)
             searchBar.resignFirstResponder()
         }
+        searchBar.resignFirstResponder()
     }
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
