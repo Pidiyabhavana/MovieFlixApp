@@ -88,9 +88,22 @@ class MFHomeViewController: UIViewController {
     ///# Functin to delete moview from existing list
     @objc func actionDelete(sender:UIButton) {
         let row = sender.tag
+        
+        
         self.collectionViewMovies.performBatchUpdates {
-            self.homeViewModel.moviesData.moviesList.remove(at: row)
+            
+            
+            
             self.collectionViewMovies.deleteItems(at: [IndexPath.init(item: row, section: 0)])
+            
+            let movie = moviesList[row]
+            
+            for i in 0..<self.homeViewModel.moviesData.moviesList.count {
+                let item = self.homeViewModel.moviesData.moviesList[i]
+                if item.id == movie.id {
+                    self.homeViewModel.moviesData.moviesList.remove(at: i)
+                }
+            }
             
         } completion: { status in
             
@@ -142,8 +155,7 @@ extension MFHomeViewController:UICollectionViewDataSource, UICollectionViewDeleg
         }
         else {
             identifier = "UnpopularMoviewCell"
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as! UnpopularMovieCell
-            let unpopularCell = cell as! UnpopularMovieCell
+            let unpopularCell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as! UnpopularMovieCell
             unpopularCell.movie = movie
             unpopularCell.lblTitle.text = movie.originalTitle
             unpopularCell.lblOverview.text = movie.overview
@@ -161,7 +173,7 @@ extension MFHomeViewController:UICollectionViewDataSource, UICollectionViewDeleg
             
             unpopularCell.btnDelete.addTarget(self, action: #selector(self.actionDelete(sender:)), for: .touchUpInside)
             unpopularCell.btnDelete.tag = indexPath.row
-            return cell
+            return unpopularCell
         }
         
     }
