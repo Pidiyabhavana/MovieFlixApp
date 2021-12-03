@@ -49,7 +49,7 @@ class MFHomeViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let index = self.collectionViewMovies.indexPath(for: sender as! UICollectionViewCell)
         let vc = segue.destination as! MFDetailViewController
-        vc.movie = self.homeViewModel.moviesData.moviesList[index!.row]
+        vc.movie = self.moviesList[index!.row]
     }
     
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
